@@ -10,26 +10,12 @@ import { drawSelection, EditorView } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
 import { marked } from 'marked';
 
+import { AlreadyConstructedError } from "./errors/already-constructed-error";
+import { NotConstructedError } from "./errors/not-constructed-error";
 import { InputOptions, Options } from './options';
 
 import './styles.scss';
 import { importDefaultToolbar, importToolbar } from '.';
-
-class NotConstructedError extends Error {
-    public constructor() {
-        super(
-            'EasyMDE is not initialized, run the "construct()" method to do so.',
-        );
-        this.name = 'NotConstructedError';
-    }
-}
-
-class AlreadyConstructedError extends Error {
-    public constructor() {
-        super('EasyMDE is already initialized.');
-        this.name = 'AlreadyConstructedError';
-    }
-}
 
 export class EasyMDE {
     private readonly element: HTMLTextAreaElement;
