@@ -1,12 +1,9 @@
 /* eslint-disable sort-keys,@typescript-eslint/member-ordering,max-classes-per-file */
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
-// import { languages } from "@codemirror/language-data"; // Costs 800KB, probably should be a manual plugin
 import {
     HighlightStyle,
     defaultHighlightStyle,
     syntaxHighlighting,
-    // HighlightStyle,
-    // tags
 } from '@codemirror/language';
 import { EditorState } from '@codemirror/state';
 import { drawSelection, EditorView } from '@codemirror/view';
@@ -36,15 +33,15 @@ class AlreadyConstructedError extends Error {
 
 export class EasyMDE {
     private readonly element: HTMLTextAreaElement;
-    private _container?: HTMLDivElement;
-    private _codemirror?: EditorView;
+    #container?: HTMLDivElement;
+    #codemirror?: EditorView;
     // private rendered = false;
-    private readonly _options: Options;
+    readonly #options: Options;
 
     private readonly plugins: IEasyMDEPlugin[] = [];
 
     public constructor(options: InputOptions) {
-        this._options = {
+        this.#options = {
             ...options,
             blockStyles: {
                 bold: '**',
@@ -59,21 +56,21 @@ export class EasyMDE {
     }
 
     public get container(): HTMLDivElement {
-        if (!this._container) {
+        if (!this.#container) {
             throw new NotConstructedError();
         }
-        return this._container;
+        return this.#container;
     }
 
     public get codemirror(): EditorView {
-        if (!this._codemirror) {
+        if (!this.#codemirror) {
             throw new NotConstructedError();
         }
-        return this._codemirror;
+        return this.#codemirror;
     }
 
     public get options(): Readonly<Options> {
-        return Object.freeze(this._options);
+        return Object.freeze(this.#options);
     }
 
     private static verifyAndReturnElement(
@@ -97,7 +94,7 @@ export class EasyMDE {
     }
 
     public async construct(): Promise<void> {
-        if (this._container && this._codemirror) {
+        if (this.#container && this.#codemirror) {
             throw new AlreadyConstructedError();
         }
 
@@ -148,7 +145,7 @@ export class EasyMDE {
         ]);
 
         this.element.hidden = true;
-        this._codemirror = new EditorView({
+        this.#codemirror = new EditorView({
             state: EditorState.create({
                 doc: this.element.value,
                 extensions: [
@@ -183,7 +180,7 @@ export class EasyMDE {
 
         this.codemirror.focus();
 
-        this._container = easyMDEContainer;
+        this.#container = easyMDEContainer;
     }
 
     public destruct(): void {
@@ -196,8 +193,8 @@ export class EasyMDE {
         this.codemirror.destroy();
         this.container.remove();
 
-        this._container = undefined;
-        this._codemirror = undefined;
+        this.#container = undefined;
+        this.#codemirror = undefined;
 
         this.element.hidden = false;
     }
