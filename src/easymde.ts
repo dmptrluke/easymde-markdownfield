@@ -12,10 +12,10 @@ import { marked } from 'marked';
 
 import { AlreadyConstructedError } from "./errors/already-constructed-error";
 import { NotConstructedError } from "./errors/not-constructed-error";
+import { importDefaultToolbar, importToolbar } from './imports';
 import { InputOptions, Options } from './options';
 
 import './styles.scss';
-import { importDefaultToolbar, importToolbar } from '.';
 
 export class EasyMDE {
     private readonly element: HTMLTextAreaElement;
