@@ -7,7 +7,7 @@ export default defineConfig({
             clean: true,
             enabled: true,
             include: ['src/**/*.ts'],
-            provider: 'c8',
+            provider: 'v8',
         },
         dir: 'src',
         environment: 'jsdom',

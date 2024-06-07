@@ -1,4 +1,4 @@
-/* eslint-disable sort-keys,@typescript-eslint/member-ordering,max-classes-per-file */
+/* eslint-disable sort-keys,@typescript-eslint/member-ordering */
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import {
     HighlightStyle,
@@ -10,8 +10,8 @@ import { drawSelection, EditorView } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
 import { marked } from 'marked';
 
-import { AlreadyConstructedError } from "./errors/already-constructed-error";
-import { NotConstructedError } from "./errors/not-constructed-error";
+import { AlreadyConstructedError } from './errors/already-constructed-error';
+import { NotConstructedError } from './errors/not-constructed-error';
 import { importDefaultToolbar, importToolbar } from './imports';
 import { InputOptions, Options } from './options';
 
@@ -62,10 +62,6 @@ export class EasyMDE {
     private static verifyAndReturnElement(
         element?: HTMLElement,
     ): HTMLTextAreaElement {
-        if (!element) {
-            throw new Error('EasyMDE: Parameter "element" is null.');
-        }
-
         if (!(element instanceof HTMLTextAreaElement)) {
             throw new TypeError(
                 'EasyMDE: Parameter "element" must be a TextArea.',

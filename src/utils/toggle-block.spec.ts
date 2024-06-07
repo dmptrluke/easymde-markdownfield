@@ -4,7 +4,7 @@ import { EditorView } from '@codemirror/view';
 // eslint-disable-next-line @typescript-eslint/no-shadow
 import { describe, expect, it } from 'vitest';
 
-import { checkBlock } from './toggle-block';
+import { checkBlock, toggleBlock } from './toggle-block';
 
 const getEditor = (
     document: string,
@@ -28,6 +28,7 @@ describe.each(['*', '**', '`', '_', '__', '~~'])(
         const wordSimple = `${character}foo${character}`;
         const wordSimpleWithSpace = `${character} foo ${character}`;
         const wordSquished = `bla${character}foo${character}bla`;
+        const wordMultiWords = `${character}foo boo${character}`;
         const wordMultiWord = `${character}foo${character} ${character}boo${character}`;
         const wordMultiLine = `${character}foo${character}\n${character}boo${character}`;
         const wordMultiTab = `${character}foo${character}\t${character}boo${character}`;
@@ -234,6 +235,33 @@ describe.each(['*', '**', '`', '_', '__', '~~'])(
             expect(result).toBeTruthy();
             expect(result[1]).toBe('boo');
         });
+
+        it('must detect an active block with selection on the first of a multi-word text', () => {
+            expect.assertions(2);
+
+            const anchor = Math.floor(wordMultiWords.split(' ')[0].length / 2);
+            const result = checkBlock(
+                getEditor(wordMultiWords, { anchor }),
+                character,
+            );
+            expect(result).toBeTruthy();
+            expect(result[1]).toBe('foo boo');
+        });
+
+        it('must detect an active block with selection on the second of a multi-word text', () => {
+            expect.assertions(2);
+
+            const multiWordSplit = wordMultiWords.split(' ');
+            const anchor =
+                Math.floor(multiWordSplit[1].length / 2) +
+                multiWordSplit[0].length;
+            const result = checkBlock(
+                getEditor(wordMultiWords, { anchor }),
+                character,
+            );
+            expect(result).toBeTruthy();
+            expect(result[1]).toBe('foo boo');
+        });
     },
 );
 
@@ -289,4 +317,111 @@ describe('checkBlock special cases', () => {
             expect(result).toBeTruthy();
         },
     );
+});
+
+describe.skip('toggleBlock', () => {
+    it('must toggle a single word on with the selection at the start', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('Word', { anchor: 0 });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('*Word*');
+    });
+
+    it('must toggle a single word on with the selection in the middle', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('Word', { anchor: 2 });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('*Word*');
+    });
+
+    it('must toggle a single word on with the selection at the end', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('Word', { anchor: 4 });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('*Word*');
+    });
+
+    it('must toggle a single word on in between other words', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('Many words are typed here', { anchor: 7 });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('Many *words* are typed here');
+    });
+
+    it('must toggle a single word on in between other words big selection', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('Many words are typed here', {
+            anchor: 5,
+            head: 10,
+        });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('Many *words* are typed here');
+    });
+
+    it('must toggle a single word off with the selection at the start', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('*Word*', { anchor: 0 });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('Word');
+    });
+
+    it('must toggle a single word off with the selection in the middle', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('*Word*', { anchor: 3 });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('Word');
+    });
+
+    it('must toggle a single word off with the selection at the end', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('*Word*', { anchor: 6 });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('Word');
+    });
+
+    it('must toggle a single word off in between other words', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('Many *words* are typed here', { anchor: 8 });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('Many words are typed here');
+    });
+
+    it('must toggle a single word off in between other words big selection', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('Many *words* are typed here', {
+            anchor: 6,
+            head: 11,
+        });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('Many words are typed here');
+    });
+
+    it('must toggle a formatted sentence off', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('*Many words are typed here*', { anchor: 8 });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('Many words are typed here');
+    });
+
+    it('must toggle a formatted sentence off in a big selection', () => {
+        expect.assertions(1);
+
+        const editor = getEditor('*Many words are typed here*', {
+            anchor: 6,
+            head: 11,
+        });
+        toggleBlock(editor, '*');
+        expect(editor.state.doc.toString()).toBe('Many words are typed here');
+    });
 });
