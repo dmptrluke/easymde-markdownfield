@@ -1,4 +1,4 @@
-import { marked } from 'marked';
+import { MarkedOptions } from 'marked';
 
 import { EasyMDE } from './easymde';
 
@@ -78,7 +78,7 @@ interface PromptTexts {
 interface RenderingOptions {
     codeSyntaxHighlighting?: boolean;
     hljs?: any;
-    markedOptions?: marked.MarkedOptions;
+    markedOptions?: MarkedOptions;
     sanitizerFunction?: (html: string) => string;
     singleLineBreaks?: boolean;
 }
