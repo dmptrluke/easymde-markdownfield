@@ -22,11 +22,11 @@
         "build:watch": "rollup -c -w",
         "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist/types",
         "postbuild": "npm run build:types",
-        "pretest": "npm run lint",
+        "pretest": "npm run check",
         "test": "npm run test:unit",
         "test:unit": "vitest run",
         "test:e2e": "cypress run",
-        "lint": "prettier --check . && eslint .",
+        "check": "prettier --check . && eslint .",
         "fix": "prettier --write . && eslint --fix ."
     },
     "dependencies": {
