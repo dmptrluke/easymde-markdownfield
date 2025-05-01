@@ -17,15 +17,14 @@ import { InputOptions, Options } from "./options";
 import "./styles.scss";
 
 export class EasyMDE {
-    private readonly element: HTMLTextAreaElement;
+    readonly #element: HTMLTextAreaElement;
     #container?: HTMLDivElement;
     #codemirror?: EditorView;
-    // private rendered = false;
     readonly #options: Options;
 
-    private readonly plugins: IEasyMDEPlugin[] = [];
+    readonly #plugins: IEasyMDEPlugin[] = [];
 
-    public constructor(options: InputOptions) {
+    constructor(options: InputOptions) {
         this.#options = {
             ...options,
             blockStyles: {
@@ -35,33 +34,31 @@ export class EasyMDE {
                 code: "`",
             },
         };
-        this.element = EasyMDE.verifyAndReturnElement(options.element);
+        this.#element = EasyMDE.#verifyAndReturnElement(options.element);
         marked.parse("# EasyMDE", { async: false });
         // eslint-disable-next-line sonarjs/no-async-constructor
         void this.construct();
     }
 
-    public get container(): HTMLDivElement {
+    get container(): HTMLDivElement {
         if (!this.#container) {
             throw new NotConstructedError();
         }
         return this.#container;
     }
 
-    public get codemirror(): EditorView {
+    get codemirror(): EditorView {
         if (!this.#codemirror) {
             throw new NotConstructedError();
         }
         return this.#codemirror;
     }
 
-    public get options(): Readonly<Options> {
+    get options(): Readonly<Options> {
         return Object.freeze(this.#options);
     }
 
-    private static verifyAndReturnElement(
-        element?: HTMLElement,
-    ): HTMLTextAreaElement {
+    static #verifyAndReturnElement(element?: HTMLElement): HTMLTextAreaElement {
         if (!(element instanceof HTMLTextAreaElement)) {
             throw new TypeError(
                 'EasyMDE: Parameter "element" must be a TextArea.',
@@ -71,11 +68,11 @@ export class EasyMDE {
         return element;
     }
 
-    public get isRendered(): boolean {
+    get isRendered(): boolean {
         return Boolean(this.container && this.codemirror);
     }
 
-    public async construct(): Promise<void> {
+    async construct(): Promise<void> {
         if (this.#container && this.#codemirror) {
             throw new AlreadyConstructedError();
         }
@@ -126,10 +123,10 @@ export class EasyMDE {
             },
         ]);
 
-        this.element.hidden = true;
+        this.#element.hidden = true;
         this.#codemirror = new EditorView({
             state: EditorState.create({
-                doc: this.element.value,
+                doc: this.#element.value,
                 extensions: [
                     syntaxHighlighting(highlightStyle),
                     syntaxHighlighting(defaultHighlightStyle),
@@ -140,35 +137,35 @@ export class EasyMDE {
                     drawSelection(),
                 ],
                 selection: {
-                    anchor: this.element.value.length,
+                    anchor: this.#element.value.length,
                 },
             }),
             // parent: this.element.parentElement || document.body,
         });
 
-        const easyMDEContainer = this.createContainer();
+        const easyMDEContainer = this.#createContainer();
 
         if (this.options.toolbar !== false) {
-            easyMDEContainer.append(await this.createToolbar());
+            easyMDEContainer.append(await this.#createToolbar());
         }
 
         easyMDEContainer.append(this.codemirror.dom);
 
         if (this.options.statusbar !== false) {
-            easyMDEContainer.append(await this.createStatusBar());
+            easyMDEContainer.append(await this.#createStatusBar());
         }
 
-        this.element.insertAdjacentElement("afterend", easyMDEContainer);
+        this.#element.insertAdjacentElement("afterend", easyMDEContainer);
 
         this.codemirror.focus();
 
         this.#container = easyMDEContainer;
     }
 
-    public destruct(): void {
-        this.element.value = this.codemirror.state.doc.toString();
+    destruct(): void {
+        this.#element.value = this.codemirror.state.doc.toString();
 
-        for (const plugin of this.plugins) {
+        for (const plugin of this.#plugins) {
             void plugin.destroy();
         }
 
@@ -178,15 +175,15 @@ export class EasyMDE {
         this.#container = undefined;
         this.#codemirror = undefined;
 
-        this.element.hidden = false;
+        this.#element.hidden = false;
     }
 
-    public addPlugin(plugin: IEasyMDEPlugin): IEasyMDEPlugin {
-        this.plugins.push(plugin);
+    addPlugin(plugin: IEasyMDEPlugin): IEasyMDEPlugin {
+        this.#plugins.push(plugin);
         return plugin;
     }
 
-    private async createToolbar(): Promise<HTMLDivElement> {
+    async #createToolbar(): Promise<HTMLDivElement> {
         const [{ Toolbar }, { defaultToolbar }] = await Promise.all([
             importToolbar(),
             importDefaultToolbar(),
@@ -197,13 +194,13 @@ export class EasyMDE {
         return toolbar.element;
     }
 
-    private async createStatusBar(): Promise<HTMLDivElement> {
+    async #createStatusBar(): Promise<HTMLDivElement> {
         const { StatusBar } = await import("./status-bar/status-bar");
         const statusBar = new StatusBar(this);
         return statusBar.element;
     }
 
-    private createContainer(): HTMLDivElement {
+    #createContainer(): HTMLDivElement {
         const container = document.createElement("div");
         container.classList.add("easymde-container");
         return container;

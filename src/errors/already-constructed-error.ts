@@ -1,5 +1,5 @@
 export class AlreadyConstructedError extends Error {
-    public constructor() {
+    constructor() {
         super("EasyMDE is already initialized.");
         this.name = "AlreadyConstructedError";
     }

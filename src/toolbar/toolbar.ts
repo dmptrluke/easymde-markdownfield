@@ -6,11 +6,11 @@ import { EasyMDE, IEasyMDEPlugin } from "../easymde";
 import { IToolbarButtonOptions } from "./default-toolbar";
 
 export class Toolbar implements IEasyMDEPlugin {
-    private static readonly activeClass = "enabled";
+    static readonly #activeClass = "enabled";
 
-    public element: HTMLDivElement;
+    element: HTMLDivElement;
 
-    public constructor(
+    constructor(
         private editor: EasyMDE,
         toolbarLayout: IToolbarButtonOptions[][],
     ) {
@@ -22,7 +22,7 @@ export class Toolbar implements IEasyMDEPlugin {
 
             for (const toolBarButtonOptions of toolBarButtonSection) {
                 toolBarSection.push(
-                    this.createToolBarButton(toolBarButtonOptions),
+                    this.#createToolBarButton(toolBarButtonOptions),
                 );
             }
 
@@ -31,7 +31,7 @@ export class Toolbar implements IEasyMDEPlugin {
                 toolbarLayout.indexOf(toolBarButtonSection) !==
                 toolbarLayout.length - 1
             ) {
-                toolBarSection.push(this.createToolBarSeparator());
+                toolBarSection.push(this.#createToolBarSeparator());
             }
 
             for (const toolBarEntry of toolBarSection) {
@@ -52,13 +52,13 @@ export class Toolbar implements IEasyMDEPlugin {
     }
 
     // eslint-disable-next-line @typescript-eslint/require-await
-    public async build(toolbarLayout: IToolbarButtonOptions[][]) {
+    async build(toolbarLayout: IToolbarButtonOptions[][]) {
         for (const toolBarButtonSection of toolbarLayout) {
             const toolBarSection: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
             for (const toolBarButtonOptions of toolBarButtonSection) {
                 toolBarSection.push(
-                    this.createToolBarButton(toolBarButtonOptions),
+                    this.#createToolBarButton(toolBarButtonOptions),
                 );
             }
 
@@ -67,7 +67,7 @@ export class Toolbar implements IEasyMDEPlugin {
                 toolbarLayout.indexOf(toolBarButtonSection) !==
                 toolbarLayout.length - 1
             ) {
-                toolBarSection.push(this.createToolBarSeparator());
+                toolBarSection.push(this.#createToolBarSeparator());
             }
 
             for (const toolBarEntry of toolBarSection) {
@@ -76,18 +76,18 @@ export class Toolbar implements IEasyMDEPlugin {
         }
     }
     // eslint-disable-next-line @typescript-eslint/require-await
-    public async destroy() {
+    async destroy() {
         this.element.remove();
     }
 
-    private createToolBarSeparator() {
+    #createToolBarSeparator() {
         const separatorElement = document.createElement("span");
         separatorElement.className = "separator";
         separatorElement.innerHTML = "|";
         return separatorElement;
     }
 
-    private createToolBarButton(
+    #createToolBarButton(
         toolBarButtonOptions: IToolbarButtonOptions,
     ): HTMLButtonElement {
         const buttonElement: HTMLButtonElement =
@@ -114,7 +114,7 @@ export class Toolbar implements IEasyMDEPlugin {
 
         if (typeof toolBarButtonOptions.active === "boolean") {
             buttonElement.classList.toggle(
-                Toolbar.activeClass,
+                Toolbar.#activeClass,
                 toolBarButtonOptions.active,
             );
         } else if (typeof toolBarButtonOptions.active === "function") {
@@ -132,7 +132,7 @@ export class Toolbar implements IEasyMDEPlugin {
                                         update,
                                     );
                                 buttonElement.classList.toggle(
-                                    Toolbar.activeClass,
+                                    Toolbar.#activeClass,
                                     result,
                                 );
                             }

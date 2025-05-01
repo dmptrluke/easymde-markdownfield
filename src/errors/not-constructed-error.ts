@@ -1,5 +1,5 @@
 export class NotConstructedError extends Error {
-    public constructor() {
+    constructor() {
         super(
             'EasyMDE is not initialized, run the "construct()" method to do so.',
         );

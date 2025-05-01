@@ -5,34 +5,34 @@ import { EasyMDE } from "../easymde";
 import { countWords } from "../utils/count-words";
 
 export class StatusBar {
-    public element: HTMLDivElement;
+    element: HTMLDivElement;
 
-    private characterCount = 0;
-    private wordCount = 0;
-    private lineCount = 1;
-    private cursorLine = 1;
-    private cursorColumn = 1;
+    #characterCount = 0;
+    #wordCount = 0;
+    #lineCount = 1;
+    #cursorLine = 1;
+    #cursorColumn = 1;
 
-    private selectionStart = 0;
-    private selectionEnd = 0;
+    #selectionStart = 0;
+    #selectionEnd = 0;
 
-    public constructor(private editor: EasyMDE) {
+    constructor(private editor: EasyMDE) {
         this.element = document.createElement("div");
         this.element.className = "easymde-statusbar";
 
         // Initial values
-        this.characterCount = this.editor.codemirror.state.doc.length;
-        this.wordCount = countWords(this.editor.codemirror.state.doc);
-        this.lineCount = this.editor.codemirror.state.doc.lines;
+        this.#characterCount = this.editor.codemirror.state.doc.length;
+        this.#wordCount = countWords(this.editor.codemirror.state.doc);
+        this.#lineCount = this.editor.codemirror.state.doc.lines;
 
         const line = this.editor.codemirror.state.doc.lineAt(
             this.editor.codemirror.state.selection.main.to,
         );
-        this.cursorLine = line.number;
-        this.cursorColumn =
+        this.#cursorLine = line.number;
+        this.#cursorColumn =
             this.editor.codemirror.state.selection.main.to - line.from + 1;
-        this.selectionStart = this.editor.codemirror.state.selection.main.from;
-        this.selectionEnd = this.editor.codemirror.state.selection.main.to;
+        this.#selectionStart = this.editor.codemirror.state.selection.main.from;
+        this.#selectionEnd = this.editor.codemirror.state.selection.main.to;
 
         this.editor.codemirror.dispatch({
             effects: StateEffect.appendConfig.of(
@@ -41,11 +41,12 @@ export class StatusBar {
                         const document = update.state.doc;
                         const selection = update.state.selection.main;
 
-                        this.characterCount = document.length;
-                        this.wordCount = countWords(document);
-                        this.lineCount = document.lines;
+                        this.#characterCount = document.length;
+                        this.#wordCount = countWords(document);
+                        this.#lineCount = document.lines;
 
-                        const direction = this.getSelectionDirection(selection);
+                        const direction =
+                            this.#getSelectionDirection(selection);
                         const toLine = document.lineAt(selection.to);
                         const fromLine = document.lineAt(selection.from);
 
@@ -54,25 +55,25 @@ export class StatusBar {
                         if (direction === "left") {
                             // Cursor is at the start of the selection.
                             cursorLine = fromLine;
-                            this.cursorColumn =
+                            this.#cursorColumn =
                                 selection.from - cursorLine.from;
                         } else {
                             // Cursor is at the end of the selection, or there is no selection.
                             cursorLine = toLine;
-                            this.cursorColumn = selection.to - cursorLine.from;
+                            this.#cursorColumn = selection.to - cursorLine.from;
 
-                            if (this.cursorColumn > toLine.length) {
+                            if (this.#cursorColumn > toLine.length) {
                                 // Column is incorrect, can happen when Ctrl+A is used. We need to manually adjust it.
-                                this.cursorColumn = toLine.length;
+                                this.#cursorColumn = toLine.length;
                             }
                         }
 
-                        this.cursorLine = cursorLine.number;
-                        this.selectionStart = selection.from;
-                        this.selectionEnd = selection.to;
+                        this.#cursorLine = cursorLine.number;
+                        this.#selectionStart = selection.from;
+                        this.#selectionEnd = selection.to;
 
                         // We start counting columns at 1.
-                        this.cursorColumn++;
+                        this.#cursorColumn++;
 
                         this.render();
                     },
@@ -83,22 +84,22 @@ export class StatusBar {
         this.render();
     }
 
-    public render() {
+    render() {
         this.element.innerHTML = `
-        <span class="status-bar-element">Lines: ${this.lineCount}</span>
-        <span class="status-bar-element">Words: ${this.wordCount}</span>
-        <span class="status-bar-element">Characters: ${this.characterCount}</span>
-        <span class="status-bar-element">Pos: ${this.cursorLine}:${this.cursorColumn}</span>
+        <span class="status-bar-element">Lines: ${this.#lineCount}</span>
+        <span class="status-bar-element">Words: ${this.#wordCount}</span>
+        <span class="status-bar-element">Characters: ${this.#characterCount}</span>
+        <span class="status-bar-element">Pos: ${this.#cursorLine}:${this.#cursorColumn}</span>
         `;
     }
 
-    private getSelectionDirection(
+    #getSelectionDirection(
         selection: SelectionRange,
     ): "right" | "left" | undefined {
-        return selection.from === this.selectionStart
+        return selection.from === this.#selectionStart
             ? "right"
             : // eslint-disable-next-line sonarjs/no-nested-conditional
-              selection.to === this.selectionEnd
+              selection.to === this.#selectionEnd
               ? "left"
               : undefined;
     }
