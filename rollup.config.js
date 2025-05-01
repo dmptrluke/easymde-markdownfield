@@ -4,6 +4,7 @@ import typescript from "@rollup/plugin-typescript";
 import cleaner from "rollup-plugin-cleaner";
 import scss from "rollup-plugin-scss";
 
+/** @type {import('rollup').RollupOptions[]} */
 export default [
     // Browser configuration
     {
@@ -15,7 +16,7 @@ export default [
         },
         plugins: [
             cleaner({
-                targets: ["./dist/"],
+                targets: ["./dist/browser"],
             }),
             nodeResolve(),
             scss({
@@ -23,6 +24,33 @@ export default [
             }),
             typescript(),
             terser(),
+        ],
+    },
+    // Node configuration
+    {
+        input: "src/index.ts",
+        output: {
+            dir: "dist/node",
+            sourcemap: true,
+        },
+        external: [
+            "marked",
+            "escape-string-regexp",
+            "@lezer/highlight",
+            "@lezer/markdown",
+            "@codemirror/lang-markdown",
+            "@codemirror/language",
+            "@codemirror/state",
+            "@codemirror/view",
+        ],
+        plugins: [
+            cleaner({
+                targets: ["./dist/node"],
+            }),
+            scss({
+                fileName: "easymde.css",
+            }),
+            typescript(),
         ],
     },
 ];

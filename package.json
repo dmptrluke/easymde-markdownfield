@@ -9,12 +9,18 @@
         "editor",
         "javascript"
     ],
-    "main": "dist/node/easymde.js",
+    "files": [
+        "dist",
+        "CHANGELOG.md"
+    ],
+    "main": "dist/node/index.js",
     "browser": "dist/browser/easymde.min.js",
     "types": "dist/types/index.d.ts",
     "license": "MIT",
     "author": "Jeroen Akkerman",
-    "repository": "github:Ionaru/easy-markdown-editor",
+    "repository": {
+        "url": "git+https://github.com/Ionaru/easy-markdown-editor.git"
+    },
     "scripts": {
         "build": "rollup -c",
         "build:watch": "rollup -c -w",

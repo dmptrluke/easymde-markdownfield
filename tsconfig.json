@@ -14,8 +14,7 @@
         "allowJs": true,
         "strict": true,
         "target": "es2021",
-        "skipLibCheck": false,
-        "outDir": "dist/browser"
+        "skipLibCheck": false
     },
     "files": ["src/index.ts"]
 }

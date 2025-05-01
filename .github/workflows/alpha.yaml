@@ -56,6 +56,7 @@ jobs:
           node-version: current
       - uses: actions/checkout@v4
       - run: npm ci
+      - run: npm run build
       - name: Update @v3-alpha version
         run: npm version premajor --no-git-tag-version --preid "alpha.$GITHUB_RUN_NUMBER"
       - name: Deploy @v3-alpha version to npm
@@ -63,4 +64,3 @@ jobs:
         with:
           tag: v3-alpha
           token: ${{ secrets.NPM_TOKEN }}
-          check-version: false
