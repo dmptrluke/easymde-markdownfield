@@ -128,6 +128,7 @@ export class EasyMDE {
             state: EditorState.create({
                 doc: this.#element.value,
                 extensions: [
+                    EditorView.lineWrapping,
                     syntaxHighlighting(highlightStyle),
                     syntaxHighlighting(defaultHighlightStyle),
                     markdown({

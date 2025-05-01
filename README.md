@@ -1,8 +1,7 @@
 # EasyMDE - Markdown Editor
 
-[![npm version](https://img.shields.io/npm/v/easymde.svg?style=for-the-badge)](https://www.npmjs.com/package/easymde)
-[![npm version](https://img.shields.io/npm/v/easymde/next.svg?style=for-the-badge)](https://www.npmjs.com/package/easymde/v/next)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/ionaru/easy-markdown-editor/cd.yaml?branch=master&style=for-the-badge)](https://github.com/Ionaru/easy-markdown-editor/actions?query=branch%3Amaster)
+[![npm @v3-alpha version](https://img.shields.io/npm/v/easymde/v3-alpha.svg?style=for-the-badge)](https://www.npmjs.com/package/easymde/v/v3-alpha)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/ionaru/easy-markdown-editor/alpha.yaml?branch=v3&style=for-the-badge)](https://github.com/Ionaru/easy-markdown-editor/actions?query=branch%3Av3)
 
 > This repository is a fork of
 > [SimpleMDE, made by Sparksuite](https://github.com/sparksuite/simplemde-markdown-editor/).
@@ -18,7 +17,7 @@ The editor is entirely customizable, from theming to toolbar buttons and javascr
 
 [**Try the demo**](https://stackblitz.com/edit/easymde)
 
-[![Preview](https://user-images.githubusercontent.com/3472373/51319377-26fe6e00-1a5d-11e9-8cc6-3137a566796d.png)](https://stackblitz.com/edit/easymde)
+[![Preview](https://github.com/user-attachments/assets/54fcc425-39cd-462f-aaa3-934524c49fd6)](https://stackblitz.com/edit/easymde)
 
 ## Quick access
 
