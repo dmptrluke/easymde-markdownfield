@@ -1,6 +1,6 @@
 {
     "name": "easymde",
-    "version": "3.0.0",
+    "version": "2.0.0",
     "type": "module",
     "description": "A simple, beautiful, and embeddable JavaScript Markdown editor that easy to use. Features include autosaving and spell checking.",
     "keywords": [
@@ -16,12 +16,10 @@
     "author": "Jeroen Akkerman",
     "repository": "github:Ionaru/easy-markdown-editor",
     "scripts": {
-        "clean": "npx -y rimraf dist",
         "build": "rollup -c",
         "build:watch": "rollup -c -w",
         "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist/types",
         "postbuild": "npm run build:types",
-        "pretest": "npm run check",
         "test": "npm run test:unit",
         "test:unit": "vitest run",
         "test:e2e": "cypress run",
