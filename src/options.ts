@@ -1,36 +1,36 @@
-import { MarkedOptions } from 'marked';
+import { MarkedOptions } from "marked";
 
-import { EasyMDE } from './easymde';
+import { EasyMDE } from "./easymde";
 
 interface ArrayOneOrMore<T> extends Array<T> {
     0: T;
 }
 
 type ToolbarButton =
-    | 'bold'
-    | 'italic'
-    | 'quote'
-    | 'unordered-list'
-    | 'ordered-list'
-    | 'link'
-    | 'image'
-    | 'strikethrough'
-    | 'code'
-    | 'table'
-    | 'redo'
-    | 'heading'
-    | 'undo'
-    | 'heading-bigger'
-    | 'heading-smaller'
-    | 'heading-1'
-    | 'heading-2'
-    | 'heading-3'
-    | 'clean-block'
-    | 'horizontal-rule'
-    | 'preview'
-    | 'side-by-side'
-    | 'fullscreen'
-    | 'guide';
+    | "bold"
+    | "italic"
+    | "quote"
+    | "unordered-list"
+    | "ordered-list"
+    | "link"
+    | "image"
+    | "strikethrough"
+    | "code"
+    | "table"
+    | "redo"
+    | "heading"
+    | "undo"
+    | "heading-bigger"
+    | "heading-smaller"
+    | "heading-1"
+    | "heading-2"
+    | "heading-3"
+    | "clean-block"
+    | "horizontal-rule"
+    | "preview"
+    | "side-by-side"
+    | "fullscreen"
+    | "guide";
 
 interface TimeFormatOptions {
     locale?: string | string[];
@@ -53,9 +53,7 @@ interface BlockStyleOptions {
     italic?: string;
 }
 
-interface CustomAttributes {
-    [key: string]: string;
-}
+type CustomAttributes = Record<string, string>;
 
 interface InsertTextOptions {
     horizontalRule?: readonly string[];
@@ -77,6 +75,7 @@ interface PromptTexts {
 
 interface RenderingOptions {
     codeSyntaxHighlighting?: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     hljs?: any;
     markedOptions?: MarkedOptions;
     sanitizerFunction?: (html: string) => string;
@@ -149,7 +148,7 @@ interface OverlayModeOptions {
     combine?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SpellCheckerOptions {
     // codeMirrorInstance: CodeMirror.Editor;
 }
@@ -183,22 +182,20 @@ export interface InputOptions {
     shortcuts?: Shortcuts;
     showIcons?: readonly ToolbarButton[];
     spellChecker?: boolean | ((options: SpellCheckerOptions) => void);
-    inputStyle?: 'textarea' | 'contenteditable';
+    inputStyle?: "textarea" | "contenteditable";
     nativeSpellcheck?: boolean;
     sideBySideFullscreen?: boolean;
-    status?: boolean | ReadonlyArray<string | StatusBarItem>;
+    status?: boolean | readonly (string | StatusBarItem)[];
     styleSelectedText?: boolean;
     tabSize?: number;
     toolbar?:
         | boolean
-        | ReadonlyArray<
-              '|' | ToolbarButton | ToolbarIcon | ToolbarDropdownIcon
-          >;
+        | readonly ("|" | ToolbarButton | ToolbarIcon | ToolbarDropdownIcon)[];
     toolbarTips?: boolean;
     onToggleFullScreen?: (goingIntoFullScreen: boolean) => void;
     theme?: string;
     scrollbarStyle?: string;
-    unorderedListStyle?: '*' | '-' | '+';
+    unorderedListStyle?: "*" | "-" | "+";
 
     uploadImage?: boolean;
     imageMaxSize?: number;
@@ -220,16 +217,14 @@ export interface InputOptions {
 
     overlayMode?: OverlayModeOptions;
 
-    direction?: 'ltr' | 'rtl';
+    direction?: "ltr" | "rtl";
 }
 
 export interface Options {
     statusbar?: boolean;
     toolbar?:
         | boolean
-        | ReadonlyArray<
-              '|' | ToolbarButton | ToolbarIcon | ToolbarDropdownIcon
-          >;
+        | readonly ("|" | ToolbarButton | ToolbarIcon | ToolbarDropdownIcon)[];
     blockStyles: {
         bold: string;
         code: string;

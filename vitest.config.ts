@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
     test: {
@@ -6,11 +6,11 @@ export default defineConfig({
             all: true,
             clean: true,
             enabled: true,
-            include: ['src/**/*.ts'],
-            provider: 'v8',
+            include: ["src/**/*.ts"],
+            provider: "v8",
         },
-        dir: 'src',
-        environment: 'jsdom',
-        include: ['**/*.spec.ts'],
+        dir: "src",
+        environment: "jsdom",
+        include: ["**/*.spec.ts"],
     },
 });

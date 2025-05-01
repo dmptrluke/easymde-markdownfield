@@ -1,13 +1,14 @@
-import { ViewUpdate } from '@codemirror/view';
+import { ViewUpdate } from "@codemirror/view";
 
-import { EasyMDE } from '../easymde';
+import { EasyMDE } from "../easymde";
 
-import { toggleBoldButton } from './buttons/toggle-bold';
-import { toggleCodeButton } from './buttons/toggle-code';
-import { toggleItalicButton } from './buttons/toggle-italic';
-// import { toggleStrikethroughButton } from "./buttons/toggle-strikethrough";
+import { toggleBoldButton } from "./buttons/toggle-bold";
+import { toggleCodeButton } from "./buttons/toggle-code";
+import { toggleItalicButton } from "./buttons/toggle-italic";
+import { toggleStrikethroughButton } from "./buttons/toggle-strikethrough";
 
 export interface IToolbarButtonOptions {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     action?: any;
     active?:
         | boolean
@@ -22,53 +23,53 @@ export const defaultToolbar: IToolbarButtonOptions[][] = [
     [
         toggleBoldButton,
         toggleItalicButton,
-        // toggleStrikethroughButton,
+        toggleStrikethroughButton,
         {
             // action: toggleHeadingSmaller,
-            icon: 'fas fa-header fa-heading',
-            name: 'heading',
-            title: 'Heading',
+            icon: "fas fa-header fa-heading",
+            name: "heading",
+            title: "Heading",
         },
     ],
     [
         toggleCodeButton,
         {
             // action: toggleBlockquote,
-            icon: 'fas fa-quote-left',
-            name: 'quote',
-            title: 'Quote',
+            icon: "fas fa-quote-left",
+            name: "quote",
+            title: "Quote",
         },
         {
             // action: toggleUnorderedList,
-            icon: 'fas fa-list-ul',
-            name: 'unordered-list',
-            title: 'Generic List',
+            icon: "fas fa-list-ul",
+            name: "unordered-list",
+            title: "Generic List",
         },
         {
             // action: toggleOrderedList,
-            icon: 'fas fa-list-ol',
-            name: 'ordered-list',
-            title: 'Numbered List',
+            icon: "fas fa-list-ol",
+            name: "ordered-list",
+            title: "Numbered List",
         },
         {
             // action: cleanBlock,
-            icon: 'fas fa-eraser',
-            name: 'clean-block',
-            title: 'Clean block',
+            icon: "fas fa-eraser",
+            name: "clean-block",
+            title: "Clean block",
         },
     ],
     [
         {
             // action: drawLink,
-            icon: 'fas fa-link',
-            name: 'link',
-            title: 'Create Link',
+            icon: "fas fa-link",
+            name: "link",
+            title: "Create Link",
         },
         {
             // action: drawImage,
-            icon: 'fas fa-image',
-            name: 'image',
-            title: 'Insert Image',
+            icon: "fas fa-image",
+            name: "image",
+            title: "Insert Image",
             // }, {
             //     // action: drawHorizontalRule,
             //     icon: 'fas fa-minus',
@@ -99,11 +100,11 @@ export const defaultToolbar: IToolbarButtonOptions[][] = [
     ],
     [
         {
-            action: 'https://simplemde.com/markdown-guide',
-            icon: 'fas fa-question',
-            name: 'guide',
+            action: "https://simplemde.com/markdown-guide",
+            icon: "fas fa-question",
+            name: "guide",
             // noDisable: true,
-            title: 'Markdown Guide',
+            title: "Markdown Guide",
             // }], [{
             //     action: NewMDE.undo,
             //     icon: 'fas fa-undo',

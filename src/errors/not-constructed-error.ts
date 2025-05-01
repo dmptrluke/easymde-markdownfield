@@ -3,6 +3,6 @@ export class NotConstructedError extends Error {
         super(
             'EasyMDE is not initialized, run the "construct()" method to do so.',
         );
-        this.name = 'NotConstructedError';
+        this.name = "NotConstructedError";
     }
 }

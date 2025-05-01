@@ -1,6 +1,6 @@
-import { EditorSelection, EditorState } from '@codemirror/state';
-import { EditorView } from '@codemirror/view';
-import escapeStringRegexp from 'escape-string-regexp';
+import { EditorSelection, EditorState } from "@codemirror/state";
+import { EditorView } from "@codemirror/view";
+import escapeStringRegexp from "escape-string-regexp";
 
 /**
  * Checks whether the selection matches a formatted block of text.
@@ -18,7 +18,7 @@ export const checkBlock = (
     const escapedCharacters = escapeStringRegexp(characters);
     const regularExpression = new RegExp(
         `^${escapedCharacters}(.*)${escapedCharacters}$`,
-        'gs',
+        "gs",
     );
 
     const checkResult = regularExpression.exec(text);
@@ -26,8 +26,16 @@ export const checkBlock = (
     let doubleCharactersCheckResult = null;
     let tripleCharactersCheckResult = null;
     if (characters.length === 1) {
-        doubleCharactersCheckResult = checkBlock(editor, characters.repeat(2), minimal);
-        tripleCharactersCheckResult = checkBlock(editor, characters.repeat(3), minimal);
+        doubleCharactersCheckResult = checkBlock(
+            editor,
+            characters.repeat(2),
+            minimal,
+        );
+        tripleCharactersCheckResult = checkBlock(
+            editor,
+            characters.repeat(3),
+            minimal,
+        );
     }
 
     if (
@@ -100,13 +108,14 @@ export const getExpandedSelection = (
     while (fromPosition >= 0) {
         const newText = state.sliceDoc(fromPosition, to);
 
-        if (newText.startsWith('\n') || newText.startsWith('\t')) {
+        if (newText.startsWith("\n") || newText.startsWith("\t")) {
             fromPosition++;
             break;
-        } else if (minimal && newText.startsWith(' ')) {
+            // eslint-disable-next-line sonarjs/no-duplicated-branches
+        } else if (minimal && newText.startsWith(" ")) {
             fromPosition++;
             break;
-        } else if (newText.startsWith(characters + ' ')) {
+        } else if (newText.startsWith(characters + " ")) {
             fromPosition += characters.length + 1;
             break;
         } else if (
@@ -123,10 +132,11 @@ export const getExpandedSelection = (
     let toPosition = to;
     while (toPosition < state.doc.length) {
         const newText = state.sliceDoc(from, toPosition);
-        if (newText.endsWith('\n') || newText.endsWith('\t')) {
+        if (newText.endsWith("\n") || newText.endsWith("\t")) {
             toPosition--;
             break;
-        } else if (minimal && newText.endsWith(' ')) {
+            // eslint-disable-next-line sonarjs/no-duplicated-branches
+        } else if (minimal && newText.endsWith(" ")) {
             toPosition--;
             break;
         } else if (

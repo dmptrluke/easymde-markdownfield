@@ -22,14 +22,14 @@ The editor is entirely customizable, from theming to toolbar buttons and javascr
 
 ## Quick access
 
--   [EasyMDE - Markdown Editor](#easymde---markdown-editor)
-    -   [Quick access](#quick-access)
-    -   [Install EasyMDE](#install-easymde)
-    -   [How to use](#how-to-use)
-    -   [How it works](#how-it-works)
-    -   [SimpleMDE fork](#simplemde-fork)
-    -   [Contributing](#contributing)
-    -   [License](#license)
+- [EasyMDE - Markdown Editor](#easymde---markdown-editor)
+    - [Quick access](#quick-access)
+    - [Install EasyMDE](#install-easymde)
+    - [How to use](#how-to-use)
+    - [How it works](#how-it-works)
+    - [SimpleMDE fork](#simplemde-fork)
+    - [Contributing](#contributing)
+    - [License](#license)
 
 ## Install EasyMDE
 
@@ -57,14 +57,14 @@ I originally made this fork to implement FontAwesome 5 compatibility into Simple
 
 Changes include:
 
--   FontAwesome 5 compatibility
--   Guide button works when editor is in preview mode
--   Links are now `https://` by default
--   Small styling changes
--   Support for Node 8 and beyond
--   Lots of refactored code
--   Links in preview will open in a new tab by default
--   TypeScript support
+- FontAwesome 5 compatibility
+- Guide button works when editor is in preview mode
+- Links are now `https://` by default
+- Small styling changes
+- Support for Node 8 and beyond
+- Lots of refactored code
+- Links in preview will open in a new tab by default
+- TypeScript support
 
 My intention is to continue development on this project, improving it and keeping it alive.
 
@@ -76,5 +76,5 @@ Want to contribute to EasyMDE? Thank you! We have a [contribution guide](./CONTR
 
 This project is released under the [MIT License](./LICENSE).
 
--   Copyright (c) 2015 Sparksuite, Inc.
--   Copyright (c) 2017 Jeroen Akkerman.
+- Copyright (c) 2015 Sparksuite, Inc.
+- Copyright (c) 2017 Jeroen Akkerman.

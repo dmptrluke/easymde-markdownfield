@@ -1,21 +1,20 @@
-/* eslint-disable sort-keys,@typescript-eslint/member-ordering */
-import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import {
     HighlightStyle,
     defaultHighlightStyle,
     syntaxHighlighting,
-} from '@codemirror/language';
-import { EditorState } from '@codemirror/state';
-import { drawSelection, EditorView } from '@codemirror/view';
-import { tags } from '@lezer/highlight';
-import { marked } from 'marked';
+} from "@codemirror/language";
+import { EditorState } from "@codemirror/state";
+import { drawSelection, EditorView } from "@codemirror/view";
+import { tags } from "@lezer/highlight";
+import { marked } from "marked";
 
-import { AlreadyConstructedError } from './errors/already-constructed-error';
-import { NotConstructedError } from './errors/not-constructed-error';
-import { importDefaultToolbar, importToolbar } from './imports';
-import { InputOptions, Options } from './options';
+import { AlreadyConstructedError } from "./errors/already-constructed-error";
+import { NotConstructedError } from "./errors/not-constructed-error";
+import { importDefaultToolbar, importToolbar } from "./imports";
+import { InputOptions, Options } from "./options";
 
-import './styles.scss';
+import "./styles.scss";
 
 export class EasyMDE {
     private readonly element: HTMLTextAreaElement;
@@ -30,15 +29,16 @@ export class EasyMDE {
         this.#options = {
             ...options,
             blockStyles: {
-                bold: '**',
-                italic: '*',
-                strikethrough: '~~',
-                code: '`',
+                bold: "**",
+                italic: "*",
+                strikethrough: "~~",
+                code: "`",
             },
         };
         this.element = EasyMDE.verifyAndReturnElement(options.element);
-        marked.parse('# EasyMDE');
-        this.construct();
+        marked.parse("# EasyMDE", { async: false });
+        // eslint-disable-next-line sonarjs/no-async-constructor
+        void this.construct();
     }
 
     public get container(): HTMLDivElement {
@@ -84,45 +84,45 @@ export class EasyMDE {
         const highlightStyle = HighlightStyle.define([
             {
                 tag: tags.heading1,
-                fontSize: '200%',
-                lineHeight: '200%',
-                textDecoration: 'none',
+                fontSize: "200%",
+                lineHeight: "200%",
+                textDecoration: "none",
             },
             {
                 tag: tags.heading2,
-                fontSize: '160%',
-                lineHeight: '160%',
-                textDecoration: 'none',
+                fontSize: "160%",
+                lineHeight: "160%",
+                textDecoration: "none",
             },
             {
                 tag: tags.heading3,
-                fontSize: '125%',
-                lineHeight: '125%',
-                textDecoration: 'none',
+                fontSize: "125%",
+                lineHeight: "125%",
+                textDecoration: "none",
             },
             {
                 tag: tags.heading4,
-                fontSize: '110%',
-                lineHeight: '110%',
-                textDecoration: 'none',
+                fontSize: "110%",
+                lineHeight: "110%",
+                textDecoration: "none",
             },
             {
                 tag: tags.heading5,
-                fontSize: '105%',
-                lineHeight: '105%',
-                textDecoration: 'none',
+                fontSize: "105%",
+                lineHeight: "105%",
+                textDecoration: "none",
             },
             {
                 tag: tags.heading6,
-                fontSize: '100%',
-                lineHeight: '100%',
-                textDecoration: 'none',
+                fontSize: "100%",
+                lineHeight: "100%",
+                textDecoration: "none",
             },
             {
                 tag: tags.monospace,
-                fontFamily: 'monospace',
-                textDecoration: 'none',
-                background: 'rgba(0, 0, 0, 0.05)',
+                fontFamily: "monospace",
+                textDecoration: "none",
+                background: "rgba(0, 0, 0, 0.05)",
             },
         ]);
 
@@ -158,7 +158,7 @@ export class EasyMDE {
             easyMDEContainer.append(await this.createStatusBar());
         }
 
-        this.element.insertAdjacentElement('afterend', easyMDEContainer);
+        this.element.insertAdjacentElement("afterend", easyMDEContainer);
 
         this.codemirror.focus();
 
@@ -169,7 +169,7 @@ export class EasyMDE {
         this.element.value = this.codemirror.state.doc.toString();
 
         for (const plugin of this.plugins) {
-            plugin.destroy();
+            void plugin.destroy();
         }
 
         this.codemirror.destroy();
@@ -181,7 +181,7 @@ export class EasyMDE {
         this.element.hidden = false;
     }
 
-    public async addPlugin(plugin: IEasyMDEPlugin): Promise<IEasyMDEPlugin> {
+    public addPlugin(plugin: IEasyMDEPlugin): IEasyMDEPlugin {
         this.plugins.push(plugin);
         return plugin;
     }
@@ -192,20 +192,20 @@ export class EasyMDE {
             importDefaultToolbar(),
         ]);
         const toolbar = new Toolbar(this, defaultToolbar);
-        await this.addPlugin(toolbar);
+        this.addPlugin(toolbar);
         // await toolbar.build(defaultToolbar);
         return toolbar.element;
     }
 
     private async createStatusBar(): Promise<HTMLDivElement> {
-        const { StatusBar } = await import('./status-bar/status-bar');
+        const { StatusBar } = await import("./status-bar/status-bar");
         const statusBar = new StatusBar(this);
         return statusBar.element;
     }
 
     private createContainer(): HTMLDivElement {
-        const container = document.createElement('div');
-        container.classList.add('easymde-container');
+        const container = document.createElement("div");
+        container.classList.add("easymde-container");
         return container;
     }
 }
@@ -214,7 +214,7 @@ export type IEasyMDEPluginClass = new (easyMDE: EasyMDE) => IEasyMDEPlugin;
 
 export interface IEasyMDEPlugin {
     // new (editor: EasyMDE, ...args: any): IEasyMDEPlugin;
-    build(arguments_: any): Promise<void>;
+    build(arguments_: unknown): Promise<void>;
 
     destroy(): Promise<void>;
 }

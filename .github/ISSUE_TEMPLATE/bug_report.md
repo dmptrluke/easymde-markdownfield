@@ -1,9 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ''
+title: ""
 labels: Bug
-assignees: ''
+assignees: ""
 ---
 
 **Describe the bug**
@@ -25,9 +25,9 @@ If applicable, add screenshots to help explain your problem.
 
 **Version information**
 
--   OS: [e.g. Windows, MacOS]
--   Browser: [e.g. Chrome 72]
--   EasyMDE version: [e.g. 2.5.1]
+- OS: [e.g. Windows, MacOS]
+- Browser: [e.g. Chrome 72]
+- EasyMDE version: [e.g. 2.5.1]
 
 **Additional context**
 Add any other context about the problem here.

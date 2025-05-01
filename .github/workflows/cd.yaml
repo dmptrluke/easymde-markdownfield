@@ -1,48 +1,48 @@
 name: Test & Deploy
 
 on:
-    workflow_dispatch:
-    push:
-        branches:
-            - master
-        tags:
-            - '*'
-    pull_request:
-        branches:
-            - master
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - master
 
 jobs:
-    audit:
-        runs-on: ubuntu-latest
+  audit:
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: current
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: current
 
-            - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-            - run: npm audit --omit=dev
+      - run: npm audit --omit=dev
 
-    test:
-        needs: [audit]
-        runs-on: ubuntu-latest
+  test:
+    needs: [audit]
+    runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: ['14', '16', '18']
+    strategy:
+      matrix:
+        node-version: ["14", "16", "18"]
 
-        steps:
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: ${{ matrix.node-version }}
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-            - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-            - run: npm ci
+      - run: npm ci
 
-            - name: Test
-              run: npm test
+      - name: Test
+        run: npm test
 #            - uses: actions/upload-artifact@v3
 #              if: failure()
 #              with:

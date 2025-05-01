@@ -1,30 +1,29 @@
-export { EasyMDE } from './easymde';
-export * from './imports';
+export { EasyMDE } from "./easymde";
+export * from "./imports";
 
 export class EasyMarkdownEditor extends HTMLElement {
-
-    name = 'World';
+    name = "World";
 
     constructor() {
         super();
-        this.name = 'World';
+        this.name = "World";
     }
 
     connectedCallback() {
-        const shadow = this.attachShadow({ mode: 'closed' });
-        shadow.innerHTML = 'Hello World!' + this.name;
+        const shadow = this.attachShadow({ mode: "closed" });
+        shadow.innerHTML = "Hello World!" + this.name;
     }
 
     static get observedAttributes() {
-        return ['name'];
+        return ["name"];
     }
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-        if (name === 'name') {
+        if (name === "name") {
             this.name = newValue;
         }
-        console.log('Attribute Changed', name, oldValue, newValue);
+        console.log("Attribute Changed", name, oldValue, newValue);
     }
 }
 
-customElements.define( 'easy-markdown-editor', EasyMarkdownEditor );
+customElements.define("easy-markdown-editor", EasyMarkdownEditor);

@@ -1,12 +1,12 @@
-import { StateEffect } from '@codemirror/state';
-import { ViewPlugin, ViewUpdate } from '@codemirror/view';
+import { StateEffect } from "@codemirror/state";
+import { ViewPlugin, ViewUpdate } from "@codemirror/view";
 
-import { EasyMDE, IEasyMDEPlugin } from '../easymde';
+import { EasyMDE, IEasyMDEPlugin } from "../easymde";
 
-import { IToolbarButtonOptions } from './default-toolbar';
+import { IToolbarButtonOptions } from "./default-toolbar";
 
 export class Toolbar implements IEasyMDEPlugin {
-    private static readonly activeClass = 'enabled';
+    private static readonly activeClass = "enabled";
 
     public element: HTMLDivElement;
 
@@ -14,12 +14,11 @@ export class Toolbar implements IEasyMDEPlugin {
         private editor: EasyMDE,
         toolbarLayout: IToolbarButtonOptions[][],
     ) {
-        this.element = document.createElement('div');
-        this.element.className = 'easymde-toolbar';
+        this.element = document.createElement("div");
+        this.element.className = "easymde-toolbar";
 
         for (const toolBarButtonSection of toolbarLayout) {
-            const toolBarSection: Array<HTMLButtonElement | HTMLSpanElement> =
-                [];
+            const toolBarSection: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
             for (const toolBarButtonOptions of toolBarButtonSection) {
                 toolBarSection.push(
@@ -52,10 +51,10 @@ export class Toolbar implements IEasyMDEPlugin {
         // return toolBar;
     }
 
+    // eslint-disable-next-line @typescript-eslint/require-await
     public async build(toolbarLayout: IToolbarButtonOptions[][]) {
         for (const toolBarButtonSection of toolbarLayout) {
-            const toolBarSection: Array<HTMLButtonElement | HTMLSpanElement> =
-                [];
+            const toolBarSection: (HTMLButtonElement | HTMLSpanElement)[] = [];
 
             for (const toolBarButtonOptions of toolBarButtonSection) {
                 toolBarSection.push(
@@ -76,14 +75,15 @@ export class Toolbar implements IEasyMDEPlugin {
             }
         }
     }
+    // eslint-disable-next-line @typescript-eslint/require-await
     public async destroy() {
         this.element.remove();
     }
 
     private createToolBarSeparator() {
-        const separatorElement = document.createElement('span');
-        separatorElement.className = 'separator';
-        separatorElement.innerHTML = '|';
+        const separatorElement = document.createElement("span");
+        separatorElement.className = "separator";
+        separatorElement.innerHTML = "|";
         return separatorElement;
     }
 
@@ -91,7 +91,7 @@ export class Toolbar implements IEasyMDEPlugin {
         toolBarButtonOptions: IToolbarButtonOptions,
     ): HTMLButtonElement {
         const buttonElement: HTMLButtonElement =
-            document.createElement('button');
+            document.createElement("button");
         buttonElement.tabIndex = -1;
         buttonElement.classList.add(toolBarButtonOptions.name);
 
@@ -99,30 +99,32 @@ export class Toolbar implements IEasyMDEPlugin {
         buttonElement.title = toolBarButtonOptions.title;
 
         // Set the button onclick action.
-        if (typeof toolBarButtonOptions.action === 'function') {
-            buttonElement.addEventListener('click', () =>
+        if (typeof toolBarButtonOptions.action === "function") {
+            buttonElement.addEventListener("click", () =>
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                 toolBarButtonOptions.action(this.editor),
             );
             // buttonElement.addEventListener()
-        } else if (typeof toolBarButtonOptions.action === 'string') {
-            buttonElement.addEventListener('click', () =>
+        } else if (typeof toolBarButtonOptions.action === "string") {
+            buttonElement.addEventListener("click", () =>
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 window.open(toolBarButtonOptions.action),
             );
         }
 
-        if (typeof toolBarButtonOptions.active === 'boolean') {
+        if (typeof toolBarButtonOptions.active === "boolean") {
             buttonElement.classList.toggle(
                 Toolbar.activeClass,
                 toolBarButtonOptions.active,
             );
-        } else if (typeof toolBarButtonOptions.active === 'function') {
+        } else if (typeof toolBarButtonOptions.active === "function") {
             this.editor.codemirror.dispatch({
                 effects: StateEffect.appendConfig.of(
                     ViewPlugin.define(() => ({
                         update: async (update: ViewUpdate) => {
                             if (
                                 typeof toolBarButtonOptions.active ===
-                                'function'
+                                "function"
                             ) {
                                 const result =
                                     await toolBarButtonOptions.active(
@@ -141,7 +143,7 @@ export class Toolbar implements IEasyMDEPlugin {
         }
 
         // Set the button icon.
-        const buttonIcon = document.createElement('i');
+        const buttonIcon = document.createElement("i");
         buttonIcon.className = toolBarButtonOptions.icon;
 
         buttonElement.append(buttonIcon);

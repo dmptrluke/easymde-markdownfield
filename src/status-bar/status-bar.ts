@@ -1,8 +1,8 @@
-import { SelectionRange, StateEffect, Line } from '@codemirror/state';
-import { ViewPlugin, ViewUpdate } from '@codemirror/view';
+import { SelectionRange, StateEffect, Line } from "@codemirror/state";
+import { ViewPlugin, ViewUpdate } from "@codemirror/view";
 
-import { EasyMDE } from '../easymde';
-import { countWords } from '../utils/count-words';
+import { EasyMDE } from "../easymde";
+import { countWords } from "../utils/count-words";
 
 export class StatusBar {
     public element: HTMLDivElement;
@@ -17,8 +17,8 @@ export class StatusBar {
     private selectionEnd = 0;
 
     public constructor(private editor: EasyMDE) {
-        this.element = document.createElement('div');
-        this.element.className = 'easymde-statusbar';
+        this.element = document.createElement("div");
+        this.element.className = "easymde-statusbar";
 
         // Initial values
         this.characterCount = this.editor.codemirror.state.doc.length;
@@ -51,7 +51,7 @@ export class StatusBar {
 
                         let cursorLine: Line;
 
-                        if (direction === 'left') {
+                        if (direction === "left") {
                             // Cursor is at the start of the selection.
                             cursorLine = fromLine;
                             this.cursorColumn =
@@ -94,11 +94,12 @@ export class StatusBar {
 
     private getSelectionDirection(
         selection: SelectionRange,
-    ): 'right' | 'left' | undefined {
+    ): "right" | "left" | undefined {
         return selection.from === this.selectionStart
-            ? 'right'
-            : selection.to === this.selectionEnd
-            ? 'left'
-            : undefined;
+            ? "right"
+            : // eslint-disable-next-line sonarjs/no-nested-conditional
+              selection.to === this.selectionEnd
+              ? "left"
+              : undefined;
     }
 }

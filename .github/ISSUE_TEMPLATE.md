@@ -2,8 +2,8 @@
 
 ### I'm submitting a...
 
--   [x] Bug report
--   [ ] Feature request
+- [x] Bug report
+- [ ] Feature request
 
 ### Reproduction steps
 

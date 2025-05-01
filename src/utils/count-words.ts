@@ -1,4 +1,4 @@
-import { Text } from '@codemirror/state';
+import { Text } from "@codemirror/state";
 
 export const countWords = (document: Text) =>
     document
@@ -6,6 +6,6 @@ export const countWords = (document: Text) =>
         .reduce(
             (previous, current) =>
                 previous +
-                (current ? current.split(' ').filter(Boolean).length : 0),
+                (current ? current.split(" ").filter(Boolean).length : 0),
             0,
         );

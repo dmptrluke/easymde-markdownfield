@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -57,9 +57,9 @@ This is a longer sentence!
                 EasyMDE,
                 importToolbar,
                 importDefaultToolbar,
-            } from '../dist/browser/easymde.min.js';
+            } from "../dist/browser/easymde.min.js";
             window.x = new EasyMDE({
-                element: document.getElementById('my-text-area'),
+                element: document.getElementById("my-text-area"),
                 toolbar: true,
                 statusbar: true,
             });
@@ -71,9 +71,11 @@ This is a longer sentence!
             // window.x.destruct();
         </script>
 
-    <easy-markdown-editor name="meow"></easy-markdown-editor>
-    <script>
-        document.querySelector('easy-markdown-editor').setAttribute('name', 'Everyone');
-    </script>
+        <easy-markdown-editor name="meow"></easy-markdown-editor>
+        <script>
+            document
+                .querySelector("easy-markdown-editor")
+                .setAttribute("name", "Everyone");
+        </script>
     </body>
 </html>
