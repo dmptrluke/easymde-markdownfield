@@ -20,10 +20,7 @@
     "author": "Jeroen Akkerman",
     "dependencies": {
         "@types/codemirror": "^5.60.10",
-        "@types/marked": "^4.0.7",
-        "codemirror": "^5.65.15",
-        "codemirror-spell-checker": "1.1.2",
-        "marked": "^4.1.0"
+        "codemirror": "^5.65.15"
     },
     "devDependencies": {
         "browserify": "^17.0.0",

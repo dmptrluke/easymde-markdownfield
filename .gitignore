@@ -1,5 +1,4 @@
-# generated files
-dist/
+# generated files (dist/ tracked in this fork)
 
 # NPM files
 node_modules/

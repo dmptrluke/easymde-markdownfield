@@ -8,16 +8,16 @@ require('codemirror/addon/mode/overlay.js');
 require('codemirror/addon/display/placeholder.js');
 require('codemirror/addon/display/autorefresh.js');
 require('codemirror/addon/selection/mark-selection.js');
-require('codemirror/addon/search/searchcursor.js');
 require('codemirror/mode/gfm/gfm.js');
 require('codemirror/mode/xml/xml.js');
-var CodeMirrorSpellChecker = require('codemirror-spell-checker');
-var marked = require('marked').marked;
+// stripped: codemirror-spell-checker (spellChecker always disabled)
+// stripped: marked (preview is server-side)
+// stripped: codemirror/addon/search/searchcursor (no find/replace UI bundled)
 
 
 // Some variables
 var isMac = /Mac/.test(navigator.platform);
-var anchorToExternalRegex = new RegExp(/(<a.*?https?:\/\/.*?[^a]>)+?/g);
+// stripped: anchorToExternalRegex (only used by marked preview)
 
 // Mapping of actions that can be bound to keyboard shortcuts or toolbar buttons
 var bindings = {
@@ -88,52 +88,7 @@ var isMobile = function () {
     return check;
 };
 
-/**
- * Modify HTML to add 'target="_blank"' to links so they open in new tabs by default.
- * @param {string} htmlText - HTML to be modified.
- * @return {string} The modified HTML text.
- */
-function addAnchorTargetBlank(htmlText) {
-    var match;
-    while ((match = anchorToExternalRegex.exec(htmlText)) !== null) {
-        // With only one capture group in the RegExp, we can safely take the first index from the match.
-        var linkString = match[0];
-
-        if (linkString.indexOf('target=') === -1) {
-            var fixedLinkString = linkString.replace(/>$/, ' target="_blank">');
-            htmlText = htmlText.replace(linkString, fixedLinkString);
-        }
-    }
-    return htmlText;
-}
-
-/**
- * Modify HTML to remove the list-style when rendering checkboxes.
- * @param {string} htmlText - HTML to be modified.
- * @return {string} The modified HTML text.
- */
-function removeListStyleWhenCheckbox(htmlText) {
-
-    var parser = new DOMParser();
-    var htmlDoc = parser.parseFromString(htmlText, 'text/html');
-    var listItems = htmlDoc.getElementsByTagName('li');
-
-    for (var i = 0; i < listItems.length; i++) {
-        var listItem = listItems[i];
-
-        for (var j = 0; j < listItem.children.length; j++) {
-            var listItemChild = listItem.children[j];
-
-            if (listItemChild instanceof HTMLInputElement && listItemChild.type === 'checkbox') {
-                // From Github: margin: 0 .2em .25em -1.6em;
-                listItem.style.marginLeft = '-1.5em';
-                listItem.style.listStyleType = 'none';
-            }
-        }
-    }
-
-    return htmlDoc.documentElement.innerHTML;
-}
+// stripped: addAnchorTargetBlank, removeListStyleWhenCheckbox (only used by marked preview)
 
 /**
  * Fix shortcut. Mac use Command, others use Ctrl.
@@ -1737,31 +1692,7 @@ function EasyMDE(options) {
     // Used later to refer to it"s parent
     options.parent = this;
 
-    // Check if Font Awesome needs to be auto downloaded
-    var autoDownloadFA = true;
-
-    if (options.autoDownloadFontAwesome === false) {
-        autoDownloadFA = false;
-    }
-
-    if (options.autoDownloadFontAwesome !== true) {
-        var styleSheets = document.styleSheets;
-        for (var i = 0; i < styleSheets.length; i++) {
-            if (!styleSheets[i].href)
-                continue;
-
-            if (styleSheets[i].href.indexOf('//maxcdn.bootstrapcdn.com/font-awesome/') > -1) {
-                autoDownloadFA = false;
-            }
-        }
-    }
-
-    if (autoDownloadFA) {
-        var link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css';
-        document.getElementsByTagName('head')[0].appendChild(link);
-    }
+    // stripped: autoDownloadFontAwesome (always disabled, FA shipped locally)
 
 
     // Find the textarea to use
@@ -2008,61 +1939,10 @@ EasyMDE.prototype.updateStatusBar = function (itemName, content) {
 };
 
 /**
- * Default markdown render.
+ * Default markdown render (stripped: marked removed, preview is server-side).
  */
 EasyMDE.prototype.markdown = function (text) {
-    if (marked) {
-        // Initialize
-        var markedOptions;
-        if (this.options && this.options.renderingConfig && this.options.renderingConfig.markedOptions) {
-            markedOptions = this.options.renderingConfig.markedOptions;
-        } else {
-            markedOptions = {};
-        }
-
-        // Update options
-        if (this.options && this.options.renderingConfig && this.options.renderingConfig.singleLineBreaks === false) {
-            markedOptions.breaks = false;
-        } else {
-            markedOptions.breaks = true;
-        }
-
-        if (this.options && this.options.renderingConfig && this.options.renderingConfig.codeSyntaxHighlighting === true) {
-
-            /* Get HLJS from config or window */
-            var hljs = this.options.renderingConfig.hljs || window.hljs;
-
-            /* Check if HLJS loaded */
-            if (hljs) {
-                markedOptions.highlight = function (code, language) {
-                    if (language && hljs.getLanguage(language)) {
-                        return hljs.highlight(language, code).value;
-                    } else {
-                        return hljs.highlightAuto(code).value;
-                    }
-                };
-            }
-        }
-
-        // Set options
-        marked.use(markedOptions);
-
-        // Convert the markdown to HTML
-        var htmlText = marked.parse(text);
-
-        // Sanitize HTML
-        if (this.options.renderingConfig && typeof this.options.renderingConfig.sanitizerFunction === 'function') {
-            htmlText = this.options.renderingConfig.sanitizerFunction.call(this, htmlText);
-        }
-
-        // Edit the HTML anchors to add 'target="_blank"' by default.
-        htmlText = addAnchorTargetBlank(htmlText);
-
-        // Remove list-style when rendering checkboxes
-        htmlText = removeListStyleWhenCheckbox(htmlText);
-
-        return htmlText;
-    }
+    return text;
 };
 
 /**
@@ -2121,7 +2001,7 @@ EasyMDE.prototype.render = function (el) {
     // CodeMirror overlay mode
     if (options.overlayMode) {
         CodeMirror.defineMode('overlay-mode', function (config) {
-            return CodeMirror.overlayMode(CodeMirror.getMode(config, options.spellChecker !== false ? 'spell-checker' : 'gfm'), options.overlayMode.mode, options.overlayMode.combine);
+            return CodeMirror.overlayMode(CodeMirror.getMode(config, 'gfm'), options.overlayMode.mode, options.overlayMode.combine);
         });
 
         mode = 'overlay-mode';
@@ -2132,22 +2012,7 @@ EasyMDE.prototype.render = function (el) {
         mode.name = 'gfm';
         mode.gitHubSpice = false;
     }
-    if (options.spellChecker !== false) {
-        mode = 'spell-checker';
-        backdrop = options.parsingConfig;
-        backdrop.name = 'gfm';
-        backdrop.gitHubSpice = false;
-
-        if (typeof options.spellChecker === 'function') {
-            options.spellChecker({
-                codeMirrorInstance: CodeMirror,
-            });
-        } else {
-            CodeMirrorSpellChecker({
-                codeMirrorInstance: CodeMirror,
-            });
-        }
-    }
+    // stripped: spellChecker initialization (always disabled)
 
     // eslint-disable-next-line no-unused-vars
     function configureMouse(cm, repeat, event) {
@@ -3050,3 +2915,4 @@ EasyMDE.prototype.toTextArea = function () {
 };
 
 module.exports = EasyMDE;
+module.exports.CodeMirror = CodeMirror;
