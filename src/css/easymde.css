@@ -336,7 +336,9 @@
     line-height: 1.2;
 }
 
-.cm-s-easymde .cm-comment {
+/* inline code: backtick delimiters and content between them */
+.cm-s-easymde .cm-formatting-code,
+.cm-s-easymde .cm-formatting-code ~ .cm-comment {
     background: rgba(0, 0, 0, .05);
     border-radius: 2px;
 }

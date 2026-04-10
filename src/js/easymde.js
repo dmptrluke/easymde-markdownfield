@@ -688,7 +688,7 @@ function toggleBlockquote(editor) {
 }
 
 /**
- * Action for toggling heading size: normal -> h1 -> h2 -> h3 -> h4 -> h5 -> h6 -> normal
+ * Action for toggling heading size: normal -> h1 -> h2 -> h3 -> normal
  */
 function toggleHeadingSmaller(editor) {
     _toggleHeading(editor.codemirror, 'smaller');
@@ -1091,8 +1091,8 @@ function _toggleHeading(cm, direction, size) {
                     } else {
                         text = '# ' + text;
                     }
-                } else if (currHeadingLevel == 6 && direction == 'smaller') {
-                    text = text.substr(7);
+                } else if (currHeadingLevel >= 4 && direction == 'smaller') {
+                    text = text.substr(currHeadingLevel + 1);
                 } else if (currHeadingLevel == 1 && direction == 'bigger') {
                     text = text.substr(2);
                 } else {
